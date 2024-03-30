@@ -1,0 +1,66 @@
+version: '3.0'
+
+services:
+  car_service:
+    container_name: my_app1
+    build:
+      context: ./car_service
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./car_service:/app/
+    ports:
+      - 8000:8000
+  event_service:
+    container_name: my_app2
+    build:
+      context: ./event_service
+    command: python manage.py runserver 0.0.0.0:8001
+    volumes:
+      - ./event_service:/app/
+    ports:
+      - 8001:8001
+  hotel_service:
+    container_name: my_app3
+    build:
+      context: ./hotel_service
+    command: python manage.py runserver 0.0.0.0:8002
+    volumes:
+      - ./hotel_service:/app/
+    ports:
+      - 8002:8002
+  notification_service:
+    container_name: my_app4
+    build:
+      context: ./notification_service
+    command: python manage.py runserver 0.0.0.0:8003
+    volumes:
+      - ./notification_service:/app/
+    ports:
+      - 8003:8003
+  payment_service:
+    container_name: my_app5
+    build:
+      context: ./payment_service
+    command: python manage.py runserver 0.0.0.0:8004
+    volumes:
+      - ./payment_service:/app/
+    ports:
+      - 8004:8004
+  resturant_service:
+    container_name: my_app6
+    build:
+      context: ./resturant_service
+    command: python manage.py runserver 0.0.0.0:8005
+    volumes:
+      - ./resturant_service:/app/
+    ports:
+      - 8005:8005
+  users_service:
+    container_name: my_app7
+    build:
+      context: ./users_service
+    command: python manage.py runserver 0.0.0.0:8006
+    volumes:
+      - ./users_service:/app/
+    ports:
+      - 8006:8006
