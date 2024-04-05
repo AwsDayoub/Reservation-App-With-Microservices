@@ -22,6 +22,9 @@ event, our app offers a seamless experience for both users and service providers
 4. run docker-compose up
 
 
+## Class Diagram
+![Main](https://github.com/AwsDayoub/Reservation-App-With-Microservices/assets/93884262/8c06131c-5098-403e-a18c-042586f16bc7)
+
 ## Documentation
 1. open your browser
 2. search for http://127.0.0.1:8000/schema/docs
