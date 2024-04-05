@@ -1,6 +1,13 @@
 ## Description
 
-The Reservation App is a versatile and user-friendly application designed to simplify the process of making and managing reservations for various services. Whether it's booking a table at a restaurant, reserving a hotel room, renting a car, or securing a spot for an event, our app offers a seamless experience for both users and service providers.
+The Reservation App is a microservices-based application, where the project is divided into several services including 
+users, hotel, restaurant, event, car, payment, and notification. These services communicate with each other using 
+HTTP requests facilitated by the Requests library. The app calls APIs asynchronously using threading to enhance 
+performance and responsiveness.
+This versatile and user-friendly application simplifies the process of making and managing reservations for various 
+services. Whether it's booking a table at a restaurant, reserving a hotel room, renting a car, or securing a spot for an 
+event, our app offers a seamless experience for both users and service providers.
+
 
 ## Features
 1. CRUD operations: The app provides full CRUD (Create, Read, Update, Delete) functionality, allowing users to create, view, modify, and delete reservations as needed. This ensures complete control and flexibility over the reservation management process.
