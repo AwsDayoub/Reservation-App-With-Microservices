@@ -18,79 +18,12 @@ import random
 
 
 
-
-
-def generateRandomNumber():
-    l = ['0' , '1' , '2' , '3', '4', '5' , '6' , '7' , '8' , '9']
-    random_value = ""
-    for _ in range(6):
-        random_value += random.choice(l)
-    return random_value
-
-
-def send_verification_email(reciepent , secrete_code):
-    context = {
-        "secret_code": secrete_code
-    }
-    sub = "Email Confirmation"
-    html_message = render_to_string("users/email_confirmation.html" , context)
-    mess = strip_tags(html_message)
-
-    message = EmailMultiAlternatives(
-        subject= sub,
-        body= mess,
-        from_email= 'awsdayoub1@gmail.com',
-        to= [reciepent]
-    )
-    message.attach_alternative(html_message , "text/html")
-    message.send()
-    print("done",reciepent , secrete_code)
-
-
-class SendEmailAndReceiveVerificationCodeEmail(APIView):
-    def get(self , request , email):
-        secrete_number = generateRandomNumber()
-        send_verification_email(email , secrete_number)
-        request.session['sent_value'] = secrete_number
-        request.session['sent_time'] = datetime.now().isoformat()
-        return Response({'secrete_code': secrete_number} , status=status.HTTP_200_OK)
-
-
-class SendVerificationCode(APIView):
-    serializer_class = SendVerificationCodeSerializer
-    def post(self , request):
-        if 'sent_value' in request.session and 'sent_time' in request.session:
-            sent_value = request.session['sent_value']
-            sent_time = datetime.fromisoformat(request.session['sent_time'])
-            received_value = request.data['received_value']
-            time_difference = abs(datetime.now() - sent_time)
-            if sent_value == received_value and time_difference <= timedelta(minutes=5):
-                try:
-                    user = User.objects.get(username=request.data['username'])
-                except:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
-                user.email_verified = True
-                user.save()
-                # return 1 if success
-                return Response("success")
-            else:
-                # return 0 if time has expired or value is not correct
-                return Response("time has expired or value is not correct")
-        else:
-            # return -1 if secret code has not sent yet
-            return Response("secret code has not sent yet") 
-
-
 class Register(APIView):
     serializer_class = UserSerializer
     def post(self , request):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        secrete_number = generateRandomNumber()
-        send_verification_email(request.data['email'] , secrete_number)
-        request.session['sent_value'] = secrete_number
-        request.session['sent_time'] = datetime.now().isoformat()
         return Response(serializer.data , status=status.HTTP_200_OK)
 
 

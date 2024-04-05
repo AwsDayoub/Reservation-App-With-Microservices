@@ -33,16 +33,21 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    # asgi server
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # My Packages
+    # 3rd party
     'drf_spectacular',
     'rest_framework',
-    "corsheaders",
+    'corsheaders',
+    'django_celery_results',
+    'django_celery_beat',
+    'channels',
     # My Apps
     'CarCompany',
     'users',
@@ -78,7 +83,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'car_service.wsgi.application'
-
+ASGI_APPLICATION = "car_service.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -160,6 +165,22 @@ EMAIL_HOST_PASSWORD = 'wwgf afun eamk whda'
 DEFAULT_FROM_EMAIL = 'Aws Dayoub <awsdayoub1@gmail.com>'
 
 
+# CELERY SETTINGS
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_TIMEZONE = 'Asia/Riyadh'
+
+CELERY_RESULT_BACKEND = 'django-db'
+
+CELERY_BEAT_SHCEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination', 
@@ -173,7 +194,18 @@ REST_FRAMEWORK = {
         'anon': '2/minute',
         'user': '10/minute'
     }
-    }
+}
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],  # Redis host and port
+        },
+        'ROUTING': 'car_service.routing.application',
+    },
+}
 
 SPECTACULAR_SETTINGS: {
     "title": "Django DRF car_service"

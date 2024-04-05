@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import User 
+from django.utils import timezone
 # Create your models here.
 
 class CarCompany(models.Model):
@@ -64,10 +65,10 @@ class CarImages(models.Model):
 
 class CarReservation(models.Model):
     car_company_id = models.ForeignKey(CarCompany , on_delete=models.CASCADE)
-    car_id = models.OneToOneField(Car , on_delete=models.CASCADE)
+    car_id = models.ForeignKey(Car , on_delete=models.CASCADE)
     user_id = models.ForeignKey(User , on_delete=models.CASCADE)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now() + timezone.timedelta(minutes=5))
     pickup_location = models.CharField(max_length=200 , null=True , blank=True)
     delivery_location = models.CharField(max_length=200 , null=True , blank=True)
     description = models.TextField(null=True , blank=True)
@@ -81,7 +82,7 @@ class CarReservation(models.Model):
         return self.car_id.price * self.number_of_days
     
     def __str__(self):
-        return "car_company_id: " + str(self.car_company_id) + " car_id: " + str(self.car_id) + " user_id: " + str(self.user_id)
+        return "reservation_id: " + str(self.pk) + "car_company_id: " + str(self.car_company_id) + " car_id: " + str(self.car_id) + " user_id: " + str(self.user_id)
 
 
 class CarReservationIdImage(models.Model):

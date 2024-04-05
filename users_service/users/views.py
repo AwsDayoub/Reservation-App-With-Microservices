@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.contrib.auth import login, logout
 from drf_spectacular.utils import extend_schema
-import random , requests
+import random , requests , threading
 # Create your views here.
 
 
@@ -81,57 +81,210 @@ class SendVerificationCode(APIView):
             return Response("secret code has not sent yet") 
 
 
+# Send Data To Other Services With Multithreading
+
 def sendRegisterDataToOtherServices(data):
-    requests.post('http://127.0.0.1:8001/users/signup/', data=data)
-    requests.post('http://127.0.0.1:8002/users/signup/', data=data)
-    requests.post('http://127.0.0.1:8003/users/signup/', data=data)
-    requests.post('http://127.0.0.1:8004/users/signup/', data=data)
-    requests.post('http://127.0.0.1:8005/users/signup/', data=data)
-    requests.post('http://127.0.0.1:8006/users/signup/', data=data)
+    endpoints = [
+        'http://127.0.0.1:8001/users/signup/',
+        'http://127.0.0.1:8002/users/signup/',
+        'http://127.0.0.1:8003/users/signup/',
+        'http://127.0.0.1:8004/users/signup/',
+        'http://127.0.0.1:8005/users/signup/',
+        'http://127.0.0.1:8006/users/signup/',
+    ]
+
+    def send_request(endpoint):
+        try:
+            response = requests.post(endpoint, data=data)
+            print(f"Sent data to {endpoint}. Status code: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error sending data to {endpoint}: {e}")
+
+    threads = []
+    for endpoint in endpoints:
+        thread = threading.Thread(target=send_request, args=(endpoint,))
+        thread.start()
+        threads.append(thread)
+
+    for thread in threads:
+        thread.join()
 
 
 def sendLoginDataToOtherServices(data):
-    requests.post('http://127.0.0.1:8001/users/login/', data=data)
-    requests.post('http://127.0.0.1:8002/users/login/', data=data)
-    requests.post('http://127.0.0.1:8003/users/login/', data=data)
-    requests.post('http://127.0.0.1:8004/users/login/', data=data)
-    requests.post('http://127.0.0.1:8005/users/login/', data=data)
-    requests.post('http://127.0.0.1:8006/users/login/', data=data)   
+
+    endpoints = [
+        'http://127.0.0.1:8001/users/login/',
+        'http://127.0.0.1:8002/users/login/',
+        'http://127.0.0.1:8003/users/login/',
+        'http://127.0.0.1:8004/users/login/',
+        'http://127.0.0.1:8005/users/login/',
+        'http://127.0.0.1:8006/users/login/',
+    ]
+
+    def send_request(endpoint):
+        try:
+            response = requests.post(endpoint, data=data)
+            print(f"Sent data to {endpoint}. Status code: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error sending data to {endpoint}: {e}")
+
+
+    threads = []
+    for endpoint in endpoints:
+        thread = threading.Thread(target=send_request, args=(endpoint,))
+        thread.start()
+        threads.append(thread)
+
+
+    for thread in threads:
+        thread.join()
+
+def sendRegisterDataToOtherServices(data):
+    endpoints = [
+        'http://127.0.0.1:8001/users/signup/',
+        'http://127.0.0.1:8002/users/signup/',
+        'http://127.0.0.1:8003/users/signup/',
+        'http://127.0.0.1:8004/users/signup/',
+        'http://127.0.0.1:8005/users/signup/',
+        'http://127.0.0.1:8006/users/signup/',
+    ]
+
+    def send_request(endpoint):
+        try:
+            response = requests.post(endpoint, data=data)
+            print(f"Sent data to {endpoint}. Status code: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error sending data to {endpoint}: {e}")
+
+    threads = []
+    for endpoint in endpoints:
+        thread = threading.Thread(target=send_request, args=(endpoint,))
+        thread.start()
+        threads.append(thread)
+
+    for thread in threads:
+        thread.join()
+
 
 def sendLogoutDataToOtherServices(data):
-    requests.post('http://127.0.0.1:8001/users/logout/', data=data)
-    requests.post('http://127.0.0.1:8002/users/logout/', data=data)
-    requests.post('http://127.0.0.1:8003/users/logout/', data=data)
-    requests.post('http://127.0.0.1:8004/users/logout/', data=data)
-    requests.post('http://127.0.0.1:8005/users/logout/', data=data)
-    requests.post('http://127.0.0.1:8006/users/logout/', data=data)    
+ 
+    endpoints = [
+        'http://127.0.0.1:8001/users/logout/',
+        'http://127.0.0.1:8002/users/logout/',
+        'http://127.0.0.1:8003/users/logout/',
+        'http://127.0.0.1:8004/users/logout/',
+        'http://127.0.0.1:8005/users/logout/',
+        'http://127.0.0.1:8006/users/logout/',
+    ]
+
+    def send_request(endpoint):
+        try:
+            response = requests.post(endpoint, data=data)
+            print(f"Sent data to {endpoint}. Status code: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error sending data to {endpoint}: {e}")
 
 
+    threads = []
+    for endpoint in endpoints:
+        thread = threading.Thread(target=send_request, args=(endpoint,))
+        thread.start()
+        threads.append(thread)
+
+ 
+    for thread in threads:
+        thread.join()
+
+
+ 
 def sendEditUserInfoToOtherServices(data):
-    requests.post('http://127.0.0.1:8001/users/edit_user_info/', data=data)
-    requests.post('http://127.0.0.1:8002/users/edit_user_info/', data=data)
-    requests.post('http://127.0.0.1:8003/users/edit_user_info/', data=data)
-    requests.post('http://127.0.0.1:8004/users/edit_user_info/', data=data)
-    requests.post('http://127.0.0.1:8005/users/edit_user_info/', data=data)
-    requests.post('http://127.0.0.1:8006/users/edit_user_info/', data=data)         
+
+    endpoints = [
+        'http://127.0.0.1:8001/users/edit_user_info/',
+        'http://127.0.0.1:8002/users/edit_user_info/',
+        'http://127.0.0.1:8003/users/edit_user_info/',
+        'http://127.0.0.1:8004/users/edit_user_info/',
+        'http://127.0.0.1:8005/users/edit_user_info/',
+        'http://127.0.0.1:8006/users/edit_user_info/',
+    ]
+
+    def send_request(endpoint):
+        try:
+            response = requests.post(endpoint, data=data)
+            print(f"Sent data to {endpoint}. Status code: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error sending data to {endpoint}: {e}")
+
+    
+    threads = []
+    for endpoint in endpoints:
+        thread = threading.Thread(target=send_request, args=(endpoint,))
+        thread.start()
+        threads.append(thread)
+
+    
+    for thread in threads:
+        thread.join()
 
 
 def sendResetPasswordToOtherServices(data):
-    requests.post('http://127.0.0.1:8001/users/password_reset/', data=data)
-    requests.post('http://127.0.0.1:8002/users/password_reset/', data=data)
-    requests.post('http://127.0.0.1:8003/users/password_reset/', data=data)
-    requests.post('http://127.0.0.1:8004/users/password_reset/', data=data)
-    requests.post('http://127.0.0.1:8005/users/password_reset/', data=data)
-    requests.post('http://127.0.0.1:8006/users/password_reset/', data=data)    
+    endpoints = [
+        'http://127.0.0.1:8001/users/password_reset/',
+        'http://127.0.0.1:8002/users/password_reset/',
+        'http://127.0.0.1:8003/users/password_reset/',
+        'http://127.0.0.1:8004/users/password_reset/',
+        'http://127.0.0.1:8005/users/password_reset/',
+        'http://127.0.0.1:8006/users/password_reset/',
+    ]
+
+    def send_request(endpoint):
+        try:
+            response = requests.post(endpoint, data=data)
+            print(f"Sent data to {endpoint}. Status code: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error sending data to {endpoint}: {e}")
+
+    threads = []
+    for endpoint in endpoints:
+        thread = threading.Thread(target=send_request, args=(endpoint,))
+        thread.start()
+        threads.append(thread)
+
+    for thread in threads:
+        thread.join()
+
+   
+
+def sendDeleteUserToOtherServices(data):
+
+    endpoints = [
+        'http://127.0.0.1:8001/users/delete_user/{username}/',
+        'http://127.0.0.1:8002/users/delete_user/{username}/',
+        'http://127.0.0.1:8003/users/delete_user/{username}/',
+        'http://127.0.0.1:8004/users/delete_user/{username}/',
+        'http://127.0.0.1:8005/users/delete_user/{username}/',
+        'http://127.0.0.1:8006/users/delete_user/{username}/',
+    ]
+
+    def send_request(endpoint):
+        try:
+            response = requests.post(endpoint, data=data)
+            print(f"Sent data to {endpoint}. Status code: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error sending data to {endpoint}: {e}")
+
+    
+    threads = []
+    for endpoint in endpoints:
+        thread = threading.Thread(target=send_request, args=(endpoint,))
+        thread.start()
+        threads.append(thread)
+
+    
+    for thread in threads:
+        thread.join()
 
 
-def sendDeleteUserToOtherServices(username):
-    requests.post(f'http://127.0.0.1:8001/users/delete_user/{username}/')
-    requests.post(f'http://127.0.0.1:8001/users/delete_user/{username}/')
-    requests.post(f'http://127.0.0.1:8001/users/delete_user/{username}/')
-    requests.post(f'http://127.0.0.1:8001/users/delete_user/{username}/')
-    requests.post(f'http://127.0.0.1:8001/users/delete_user/{username}/')
-    requests.post(f'http://127.0.0.1:8001/users/delete_user/{username}/')       
 
 class Register(APIView):
     serializer_class = UserSerializer
