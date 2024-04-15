@@ -58,6 +58,9 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',   
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+
 ROOT_URLCONF = 'notification_service.urls'
 
 TEMPLATES = [

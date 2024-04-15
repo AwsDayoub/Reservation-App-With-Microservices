@@ -59,6 +59,8 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 ROOT_URLCONF = 'hotel_service.urls'
 
 TEMPLATES = [
