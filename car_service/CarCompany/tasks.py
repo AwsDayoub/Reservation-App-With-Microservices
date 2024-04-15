@@ -12,7 +12,8 @@ def change_car_status(car_id):
         if car.reserved:
             car.reserved = False
             car.save()
-            serializer = CarSerializer(data=car)
+            serializer = CarSerializer(car)
+            print(serializer.data)
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(
                 "car_status",

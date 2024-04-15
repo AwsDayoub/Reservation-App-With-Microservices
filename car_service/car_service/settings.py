@@ -54,7 +54,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -62,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',  
+    'corsheaders.middleware.CorsMiddleware', 
 ]
 
 ROOT_URLCONF = 'car_service.urls'
@@ -126,7 +126,7 @@ AUTH_USER_MODEL = 'users.User'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIMEZONE = 'UTC'
 
 USE_I18N = True
 
@@ -166,19 +166,20 @@ DEFAULT_FROM_EMAIL = 'Aws Dayoub <awsdayoub1@gmail.com>'
 
 
 # CELERY SETTINGS
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
 
-CELERY_ACCEPT_CONTENT = ['application/json']
+ACCEPT_CONTENT = ['application/json']
 
-CELERY_RESULT_SERIALIZER = 'json'
+RESULT_SERIALIZER = 'json'
 
-CELERY_TASK_SERIALIZER = 'json'
+TASK_SERIALIZER = 'json'
 
-CELERY_TIMEZONE = 'Asia/Riyadh'
+CELERY_TIMEZONE = 'Asia/Damascus'
+#TIMEZONE = 'UTC'
 
-CELERY_RESULT_BACKEND = 'django-db'
+RESULT_BACKEND = 'django-db'
 
-CELERY_BEAT_SHCEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 
 REST_FRAMEWORK = {
@@ -199,11 +200,10 @@ REST_FRAMEWORK = {
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.RedisChannelLayer',
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             'hosts': [('localhost', 6379)],  # Redis host and port
         },
-        'ROUTING': 'car_service.routing.application',
     },
 }
 

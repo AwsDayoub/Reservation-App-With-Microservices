@@ -310,13 +310,14 @@ class LogIn(APIView):
             return Response('user not found' , status=status.HTTP_404_NOT_FOUND)
         if user is not None:
             if user.password == request.data['password']:
+                serializer = self.serializer_class(data=user)
                 if not user.is_authenticated:
                     login(request , user)
                     sendLoginDataToOtherServices({'username':request.data['username'], 'password':request.data['password']})
-                    return Response({'message': 'logged in successfuly', 'user_id': user.pk, 'user_type': user.user_type }, status=status.HTTP_200_OK)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
                 else:
                     sendLoginDataToOtherServices({'username':request.data['username'], 'password':request.data['password']})
-                    return Response({'message': 'user already loged in', 'user_id': user.pk, 'user_type': user.user_type }, status=status.HTTP_200_OK)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response('password not correct' , status=status.HTTP_400_BAD_REQUEST)
         else:

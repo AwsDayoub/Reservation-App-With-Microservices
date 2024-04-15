@@ -8,6 +8,8 @@ from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework import generics
 from rest_framework.parsers import MultiPartParser, FormParser
 from drf_spectacular.utils import extend_schema
+from datetime import datetime
+from dateutil.parser import parse
 from .models import *
 from .serializer import *
 from .paginations import CarCompanyListPagination
@@ -171,12 +173,17 @@ class AddCarReservation(APIView):
         else:
             car.reserved = True
             car.save()
-            print('hghghghghghghghghhghghghgh')
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 # schedule task to change car status
-                change_car_status.apply_async(args=[car_id], eta=serializer.data['end_date'])
+                #change_car_status.apply_async(args=[car_id], eta=serializer.data['end_date'])
+                end_date = parse(serializer.data['end_date']).replace(tzinfo=None)
+                countdown = (end_date - datetime.now()).total_seconds()
+                # Ensure countdown is not negative
+                countdown = max(countdown, 0)
+                # Schedule task to change car status
+                change_car_status.apply_async(args=[car_id], countdown=countdown)
                 return Response({'message': 'success, use the returned reservation id to add image of user credintials', 'reservation_id': serializer.data.get('pk')}, status=status.HTTP_200_OK)
             else:
                 return Response('not valid data', status=status.HTTP_400_BAD_REQUEST)
