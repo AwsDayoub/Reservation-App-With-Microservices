@@ -90,7 +90,7 @@ def sendRegisterDataToOtherServices(data):
         'http://127.0.0.1:8003/users/signup/',
         'http://127.0.0.1:8004/users/signup/',
         'http://127.0.0.1:8005/users/signup/',
-        'http://127.0.0.1:8006/users/signup/',
+        'http://127.0.0.1:8000/users/signup/',
     ]
 
     def send_request(endpoint):
@@ -118,7 +118,7 @@ def sendLoginDataToOtherServices(data):
         'http://127.0.0.1:8003/users/login/',
         'http://127.0.0.1:8004/users/login/',
         'http://127.0.0.1:8005/users/login/',
-        'http://127.0.0.1:8006/users/login/',
+        'http://127.0.0.1:8000/users/login/',
     ]
 
     def send_request(endpoint):
@@ -146,7 +146,7 @@ def sendRegisterDataToOtherServices(data):
         'http://127.0.0.1:8003/users/signup/',
         'http://127.0.0.1:8004/users/signup/',
         'http://127.0.0.1:8005/users/signup/',
-        'http://127.0.0.1:8006/users/signup/',
+        'http://127.0.0.1:8000/users/signup/',
     ]
 
     def send_request(endpoint):
@@ -174,7 +174,7 @@ def sendLogoutDataToOtherServices(data):
         'http://127.0.0.1:8003/users/logout/',
         'http://127.0.0.1:8004/users/logout/',
         'http://127.0.0.1:8005/users/logout/',
-        'http://127.0.0.1:8006/users/logout/',
+        'http://127.0.0.1:8000/users/logout/',
     ]
 
     def send_request(endpoint):
@@ -205,7 +205,7 @@ def sendEditUserInfoToOtherServices(data):
         'http://127.0.0.1:8003/users/edit_user_info/',
         'http://127.0.0.1:8004/users/edit_user_info/',
         'http://127.0.0.1:8005/users/edit_user_info/',
-        'http://127.0.0.1:8006/users/edit_user_info/',
+        'http://127.0.0.1:8000/users/edit_user_info/',
     ]
 
     def send_request(endpoint):
@@ -234,7 +234,7 @@ def sendResetPasswordToOtherServices(data):
         'http://127.0.0.1:8003/users/password_reset/',
         'http://127.0.0.1:8004/users/password_reset/',
         'http://127.0.0.1:8005/users/password_reset/',
-        'http://127.0.0.1:8006/users/password_reset/',
+        'http://127.0.0.1:8000/users/password_reset/',
     ]
 
     def send_request(endpoint):
@@ -263,7 +263,7 @@ def sendDeleteUserToOtherServices(data):
         'http://127.0.0.1:8003/users/delete_user/{username}/',
         'http://127.0.0.1:8004/users/delete_user/{username}/',
         'http://127.0.0.1:8005/users/delete_user/{username}/',
-        'http://127.0.0.1:8006/users/delete_user/{username}/',
+        'http://127.0.0.1:8000/users/delete_user/{username}/',
     ]
 
     def send_request(endpoint):
