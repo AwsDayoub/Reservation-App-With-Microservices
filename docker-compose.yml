@@ -10,6 +10,13 @@ services:
       - ./car_service:/app/
     ports:
       - 8000:8000
+  celery_car_service:
+    container_name: celery_my_app1
+    build:
+      context: ./car_service
+    command: celery -A car_service worker -l INFO
+    volumes:
+      - ./car_service:/app/
   event_service:
     container_name: my_app2
     build:
