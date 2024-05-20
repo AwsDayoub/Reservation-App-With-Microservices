@@ -1,6 +1,10 @@
 version: '3.0'
 
 services:
+  redis:
+    image: redis:7.0.11-alpine
+    ports:
+      - "6379:6379"
   car_service:
     container_name: my_app1
     build:
@@ -17,6 +21,8 @@ services:
     command: celery -A car_service worker -l INFO
     volumes:
       - ./car_service:/app/
+    depends_on:
+      - redis
   event_service:
     container_name: my_app2
     build:
