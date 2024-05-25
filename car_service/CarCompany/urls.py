@@ -14,7 +14,7 @@ urlpatterns = [
     path('add_car_company_images/', views.AddCarCompanyImage.as_view()),
     path('add_car/', views.AddCar.as_view()),
     path('add_car_images/', views.AddCarImages.as_view()),
-    path('add_car_reservation/<int:car_id>/', views.AddCarReservation.as_view()),
+   # path('add_car_reservation/<int:car_id>/', views.AddCarReservation.as_view()),
     path('add_car_reservation_id_image/' , views.AddCarReservationIDImage.as_view()),
     path('add_car_company_comment/', views.AddCarCompanyComment.as_view()),
     path('update_car_company/', views.UpdateCarCompany.as_view()),

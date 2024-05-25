@@ -14,7 +14,7 @@ from .models import *
 from .serializer import *
 from .paginations import CarCompanyListPagination
 from .permissions import IsManager
-from .tasks import change_car_status
+#from .tasks import change_car_status
 
 
 # Create your views here.
