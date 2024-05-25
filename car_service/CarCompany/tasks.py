@@ -1,10 +1,10 @@
-from celery import shared_task
+#from celery import shared_task
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from .models import Car
 from .serializer import CarSerializer
 
-
+'''
 @shared_task
 def change_car_status(car_id):
     try:
@@ -26,4 +26,4 @@ def change_car_status(car_id):
         else:
             return f"Car {car_id} is already available"
     except Car.DoesNotExist:
-        return f"Car {car_id} not found"
+        return f"Car {car_id} not found"'''

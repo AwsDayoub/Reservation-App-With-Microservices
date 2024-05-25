@@ -159,7 +159,7 @@ class AddCarImages(generics.CreateAPIView):
     throttle_classes = [AnonRateThrottle, UserRateThrottle]
 
 
-
+'''
 class AddCarReservation(APIView):
     serializer_class = CarReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -188,7 +188,7 @@ class AddCarReservation(APIView):
             else:
                 return Response('not valid data', status=status.HTTP_400_BAD_REQUEST)
             
-
+'''
 
 class AddCarReservationIDImage(generics.CreateAPIView):
     serializer_class = CarReservationIdImageSerializer

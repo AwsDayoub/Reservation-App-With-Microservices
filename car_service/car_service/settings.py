@@ -167,7 +167,7 @@ EMAIL_HOST_PASSWORD = 'wwgf afun eamk whda'
 
 DEFAULT_FROM_EMAIL = 'Aws Dayoub <awsdayoub1@gmail.com>'
 
-
+'''
 # CELERY SETTINGS
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
 
@@ -183,7 +183,7 @@ CELERY_TIMEZONE = 'Asia/Damascus'
 RESULT_BACKEND = 'django-db'
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-
+'''
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
