@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'rest_framework',
     'corsheaders',
-    'django_celery_results',
-    'django_celery_beat',
+   # 'django_celery_results',
+   # 'django_celery_beat',
     'channels',
     # My Apps
     'CarCompany',
