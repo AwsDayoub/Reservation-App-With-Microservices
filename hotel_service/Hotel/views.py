@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Hotel, City , HotelImages, Features, Stay, StayImages, HotelComments
-from .serializer import HotelSerializer, CitySerializer
+from .serializer import HotelSerializer, CitySerializer, HotelBigSerializer, StaySerializer , HotelImagesSerializer, HotelFeaturesSerializer, HotelCommentsSerializer
 from .paginations import HotelListPagination, CityListPagination
 from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import IsAuthenticated
@@ -59,8 +59,51 @@ class ShowCityHotels(APIView):
 
 
 class ShowHotelDetails(APIView):
+    serializer_class = HotelSerializer
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
     def get(self, request, hotel_id):
         hotel = Hotel.objects.get(pk=hotel_id)
-        serializer = HotelSerializer(hotel)
-        print(hotel.hotelcomments_set)
-        return Response(serializer.data)
+        serializer = self.serializer_class(hotel)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class ShowHotelStays(APIView):
+    serializer_class = StaySerializer
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    def get(self, request, hotel_id):
+        stays = Stay.objects.filter(hotel_id=hotel_id)
+        serializer = self.serializer_class(stays, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class ShowHotelImages(APIView):
+    serializer_class = HotelImagesSerializer
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    def get(self, request, hotel_id):
+        images = HotelImages.objects.filter(hotel=hotel_id)
+        serializer = self.serializer_class(images, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+
+class ShowHotelFeatures(APIView):
+    serializer_class = HotelFeaturesSerializer
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    def get(self, request, hotel_id):
+        features = Features.objects.filter(hotel=hotel_id)
+        serializer = self.serializer_class(features, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class ShowHotelComments(APIView):
+    serializer_class = HotelCommentsSerializer
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    def get(self, request, hotel_id):
+        comments = HotelComments.objects.filter(hotel_id=hotel_id)
+        serializer = self.serializer_class(comments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)    

@@ -60,7 +60,7 @@ class Stay(models.Model):
     stay_type = models.CharField(max_length=30 , choices=ROOM_CHOICES)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     description = models.TextField(null=True , blank=True)
-    reserved = models.BooleanField(default=False)
+    
 
     def __str__(self):
         return str(self.pk)
