@@ -1,4 +1,4 @@
-'''from __future__ import absolute_import , unicode_literals
+from __future__ import absolute_import , unicode_literals
 from celery import Celery
 from django.conf import settings
 from celery.schedules import crontab
@@ -26,4 +26,4 @@ app.autodiscover_tasks()
 
 @app.task(bind=True)
 def debug(self):
-    print(f'Request: {self.request!r}')'''
+    print(f'Request: {self.request!r}')
