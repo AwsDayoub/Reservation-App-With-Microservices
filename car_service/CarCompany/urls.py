@@ -3,7 +3,9 @@ from . import views
 
 urlpatterns = [
     path('search_for_car_companies/<str:word>/', views.SearchForCarCompanies.as_view()),
+    path('show_cities/', views.ShowCities.as_view()),
     path('show_car_comapnies/', views.ShowCarCompanies.as_view()),
+    path('show_carcompanies_in_city/<int:city_id>', views.ShowCityCarCompanies.as_view()),
     path('show_car_company_details/<int:car_company_id>/', views.ShowCarCompanyDetails.as_view()),
     path('show_cars/<int:car_company_id>/', views.ShowCars.as_view()),
     path('show_car_details/<int:car_id>/', views.ShowCarDetails.as_view()),
@@ -14,7 +16,7 @@ urlpatterns = [
     path('add_car_company_images/', views.AddCarCompanyImage.as_view()),
     path('add_car/', views.AddCar.as_view()),
     path('add_car_images/', views.AddCarImages.as_view()),
-    path('add_car_reservation/<int:car_id>/', views.AddCarReservation.as_view()),
+    path('add_car_reservation/', views.ReserveCarView.as_view()),
     path('add_car_reservation_id_image/' , views.AddCarReservationIDImage.as_view()),
     path('add_car_company_comment/', views.AddCarCompanyComment.as_view()),
     path('update_car_company/', views.UpdateCarCompany.as_view()),
@@ -25,4 +27,6 @@ urlpatterns = [
     path('delete_car_company/<int:car_company_id>/', views.DeleteCarCompany.as_view()),
     path('delete_car/<int:car_id>/', views.DeleteCar.as_view()),
     path('delete_car_company_comment/<int:car_company_comment_id>/', views.DeleteCarCompanyComment.as_view()),
+    path('show_customer_reservations/<str:username>', views.ShowCustomerReservations.as_view()),
+    path('update_balance/', views.UpdateBalance.as_view()),
 ]
