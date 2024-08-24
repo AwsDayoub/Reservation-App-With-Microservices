@@ -4,15 +4,16 @@ from rest_framework.response import Response
 from rest_framework import status , generics
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserSerializer , SendVerificationCodeSerializer , LoginSerializer , ResetPasswordSerializer
+from .serializers import *
 from datetime import datetime , timedelta
 from .models import User
 from django.core.mail import send_mail , EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from drf_spectacular.utils import extend_schema
 import random , requests , threading
+from rest_framework.authtoken.models import Token
 # Create your views here.
 
 
@@ -78,19 +79,15 @@ class SendVerificationCode(APIView):
                 return Response("time has expired or value is not correct")
         else:
             # return -1 if secret code has not sent yet
-            return Response("secret code has not sent yet") 
+            return Response("secret code has not sent yet")
 
 
 # Send Data To Other Services With Multithreading
 
 def sendRegisterDataToOtherServices(data):
     endpoints = [
-        'http://127.0.0.1:8001/users/signup/',
-        'http://127.0.0.1:8002/users/signup/',
-        'http://127.0.0.1:8003/users/signup/',
-        'http://127.0.0.1:8004/users/signup/',
-        'http://127.0.0.1:8005/users/signup/',
-        'http://127.0.0.1:8000/users/signup/',
+        'https://awsdayoubhotels.pythonanywhere.com/users/signup/',
+        'https://awsdayoubcars.pythonanywhere.com/users/signup/',
     ]
 
     def send_request(endpoint):
@@ -113,12 +110,8 @@ def sendRegisterDataToOtherServices(data):
 def sendLoginDataToOtherServices(data):
 
     endpoints = [
-        'http://127.0.0.1:8001/users/login/',
-        'http://127.0.0.1:8002/users/login/',
-        'http://127.0.0.1:8003/users/login/',
-        'http://127.0.0.1:8004/users/login/',
-        'http://127.0.0.1:8005/users/login/',
-        'http://127.0.0.1:8000/users/login/',
+        'https://awsdayoubhotels.pythonanywhere.com/users/login/',
+        'https://awsdayoubcars.pythonanywhere.com/users/login/',
     ]
 
     def send_request(endpoint):
@@ -141,12 +134,8 @@ def sendLoginDataToOtherServices(data):
 
 def sendRegisterDataToOtherServices(data):
     endpoints = [
-        'http://127.0.0.1:8001/users/signup/',
-        'http://127.0.0.1:8002/users/signup/',
-        'http://127.0.0.1:8003/users/signup/',
-        'http://127.0.0.1:8004/users/signup/',
-        'http://127.0.0.1:8005/users/signup/',
-        'http://127.0.0.1:8000/users/signup/',
+        'https://awsdayoubhotels.pythonanywhere.com/users/signup/',
+        'https://awsdayoubcars.pythonanywhere.com/users/signup/',
     ]
 
     def send_request(endpoint):
@@ -167,14 +156,10 @@ def sendRegisterDataToOtherServices(data):
 
 
 def sendLogoutDataToOtherServices(data):
- 
+
     endpoints = [
-        'http://127.0.0.1:8001/users/logout/',
-        'http://127.0.0.1:8002/users/logout/',
-        'http://127.0.0.1:8003/users/logout/',
-        'http://127.0.0.1:8004/users/logout/',
-        'http://127.0.0.1:8005/users/logout/',
-        'http://127.0.0.1:8000/users/logout/',
+        'https://awsdayoubhotels.pythonanywhere.com/users/logout/',
+        'https://awsdayoubcars.pythonanywhere.com/users/logout/',
     ]
 
     def send_request(endpoint):
@@ -191,21 +176,17 @@ def sendLogoutDataToOtherServices(data):
         thread.start()
         threads.append(thread)
 
- 
+
     for thread in threads:
         thread.join()
 
 
- 
+
 def sendEditUserInfoToOtherServices(data):
 
     endpoints = [
-        'http://127.0.0.1:8001/users/edit_user_info/',
-        'http://127.0.0.1:8002/users/edit_user_info/',
-        'http://127.0.0.1:8003/users/edit_user_info/',
-        'http://127.0.0.1:8004/users/edit_user_info/',
-        'http://127.0.0.1:8005/users/edit_user_info/',
-        'http://127.0.0.1:8000/users/edit_user_info/',
+        'https://awsdayoubhotels.pythonanywhere.com/users/edit_user_info/',
+        'https://awsdayoubcars.pythonanywhere.com/users/edit_user_info/',
     ]
 
     def send_request(endpoint):
@@ -215,26 +196,22 @@ def sendEditUserInfoToOtherServices(data):
         except requests.RequestException as e:
             print(f"Error sending data to {endpoint}: {e}")
 
-    
+
     threads = []
     for endpoint in endpoints:
         thread = threading.Thread(target=send_request, args=(endpoint,))
         thread.start()
         threads.append(thread)
 
-    
+
     for thread in threads:
         thread.join()
 
 
 def sendResetPasswordToOtherServices(data):
     endpoints = [
-        'http://127.0.0.1:8001/users/password_reset/',
-        'http://127.0.0.1:8002/users/password_reset/',
-        'http://127.0.0.1:8003/users/password_reset/',
-        'http://127.0.0.1:8004/users/password_reset/',
-        'http://127.0.0.1:8005/users/password_reset/',
-        'http://127.0.0.1:8000/users/password_reset/',
+        'https://awsdayoubhotels.pythonanywhere.com/users/password_reset/',
+        'https://awsdayoubcars.pythonanywhere.com/users/password_reset/',
     ]
 
     def send_request(endpoint):
@@ -253,17 +230,13 @@ def sendResetPasswordToOtherServices(data):
     for thread in threads:
         thread.join()
 
-   
+
 
 def sendDeleteUserToOtherServices(data):
 
     endpoints = [
-        'http://127.0.0.1:8001/users/delete_user/{username}/',
-        'http://127.0.0.1:8002/users/delete_user/{username}/',
-        'http://127.0.0.1:8003/users/delete_user/{username}/',
-        'http://127.0.0.1:8004/users/delete_user/{username}/',
-        'http://127.0.0.1:8005/users/delete_user/{username}/',
-        'http://127.0.0.1:8000/users/delete_user/{username}/',
+        'https://awsdayoubhotels.pythonanywhere.com/users/delete_user/{username}/',
+        'https://awsdayoubcars.pythonanywhere.com/users/delete_user/{username}/',
     ]
 
     def send_request(endpoint):
@@ -273,14 +246,14 @@ def sendDeleteUserToOtherServices(data):
         except requests.RequestException as e:
             print(f"Error sending data to {endpoint}: {e}")
 
-    
+
     threads = []
     for endpoint in endpoints:
         thread = threading.Thread(target=send_request, args=(endpoint,))
         thread.start()
         threads.append(thread)
 
-    
+
     for thread in threads:
         thread.join()
 
@@ -288,41 +261,80 @@ def sendDeleteUserToOtherServices(data):
 
 class Register(APIView):
     serializer_class = UserSerializer
-    def post(self , request):
-        serializer = UserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        sendRegisterDataToOtherServices(serializer.data)
-        secrete_number = generateRandomNumber()
-        send_verification_email(request.data['email'] , secrete_number)
-        request.session['sent_value'] = secrete_number
-        request.session['sent_time'] = datetime.now().isoformat()
-        return Response(serializer.data , status=status.HTTP_200_OK)
 
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            sendRegisterDataToOtherServices(serializer.data)
+            secret_number = generateRandomNumber()
+            send_verification_email(request.data['email'], secret_number)
+            request.session['sent_value'] = secret_number
+            request.session['sent_time'] = datetime.now().isoformat()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# class LogIn(APIView):
+#     serializer_class = LoginSerializer
+
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+#             username = serializer.validated_data.get('username')
+#             password = serializer.validated_data.get('password')
+
+#             try:
+#                 user = User.objects.get(username=username)
+#                 if user.password == password:
+#                     token, created = Token.objects.get_or_create(user=user)
+#                     return Response({'token': token.key}, status=status.HTTP_200_OK)
+#                 else:
+#                     return Response({'error': 'Invalid username or password'}, status=status.HTTP_400_BAD_REQUEST)
+#             except User.DoesNotExist:
+#                 return Response({'error': 'Invalid username or password'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LogIn(APIView):
     serializer_class = LoginSerializer
-    def post(self , request):
-        print(request.data)
-        try:
-            user = User.objects.get(username=request.data['username'])
-        except:
-            return Response('user not found' , status=status.HTTP_404_NOT_FOUND)
-        if user is not None:
-            if user.password == request.data['password']:
-                serializer = self.serializer_class(data=user)
-                if not user.is_authenticated:
-                    login(request , user)
-                    sendLoginDataToOtherServices({'username':request.data['username'], 'password':request.data['password']})
-                    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data.get('username')
+            password = serializer.validated_data.get('password')
+
+            try:
+                user = User.objects.get(username=username)
+
+                # Direct password comparison
+                if user.password == password:  # This assumes passwords are not hashed, which is not secure
+                    token, created = Token.objects.get_or_create(user=user)
+
+                    # Prepare the user info to be returned
+                    user_info = {
+                        'id': user.id,
+                        'username': user.username,
+                        'first_name': user.first_name,
+                        'last_name': user.last_name,
+                        'password': user.password,
+                        'email': user.email,
+                        'age': user.age,
+                        'country': user.country,
+                        'city': user.city,
+                        'phone': user.phone,
+                        'balance': user.balance,
+                        'user_type': user.user_type,
+                    }
+
+                    return Response({'token': token.key, 'user': user_info}, status=status.HTTP_200_OK)
                 else:
-                    sendLoginDataToOtherServices({'username':request.data['username'], 'password':request.data['password']})
-                    return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response('password not correct' , status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response('user not found' , status=status.HTTP_404_NOT_FOUND)
-        
+                    return Response({'error': 'Invalid username or password'}, status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist:
+                return Response({'error': 'Invalid username or password'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LogOut(APIView):
     def post(self , request):
@@ -333,9 +345,9 @@ class LogOut(APIView):
 
 
 class EditUserInfo(APIView):
-    serializer_class = UserSerializer
-    parser_classes = [MultiPartParser]
-    permission_classes = [IsAuthenticated]
+    serializer_class = UpdateInfoSerializer
+    #parser_classes = [MultiPartParser]
+    #permission_classes = [IsAuthenticated]
     def put(self , request):
         user = User.objects.get(username=request.data['username'])
         print(user)
@@ -360,13 +372,13 @@ class ResetPassword(APIView):
         user.save()
         sendResetPasswordToOtherServices({'email': request.data['email'], 'new_password': request.data['new_password']})
         return Response('success' , status=status.HTTP_200_OK)
-    
+
 
 class DeleteUser(APIView):
     permission_classes = [IsAuthenticated]
     def delete(self, request, username):
         try:
-            user = User.objects.get(username=username) 
+            user = User.objects.get(username=username)
             user.delete()
             sendDeleteUserToOtherServices()
             return Response('success', status=status.HTTP_200_OK)
