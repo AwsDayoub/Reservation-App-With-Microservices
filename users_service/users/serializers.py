@@ -7,6 +7,11 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username', 'password', 'first_name', 'last_name', 'email', 'age', 'country', 'city', 'phone', 'image']
 
 
+class UpdateInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'first_name', 'last_name', 'email', 'age', 'country', 'city', 'phone']
+
 
 
 class SendVerificationCodeSerializer(serializers.Serializer):
