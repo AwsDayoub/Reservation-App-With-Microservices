@@ -7,8 +7,8 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
 
     TYPE = [
-        ('Customer' , 'Customer') , 
-        ('HotelAdmin' , 'HotelAdmin') , 
+        ('Customer' , 'Customer') ,
+        ('HotelAdmin' , 'HotelAdmin') ,
         ('CarCompanyAdmin' , 'CarCompanyAdmin'),
         ('EventAdmin' , 'EventAdmin'),
         ('ResturantAdmin' , 'ResturantAdmin')]
@@ -17,7 +17,7 @@ class User(AbstractUser):
     country = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
-    balance = models.IntegerField(null=True, blank=True, default=0)
+    balance = models.IntegerField(null=True, blank=True, default=99999)
     email_verified = models.BooleanField(default=False)
     image = models.ImageField(upload_to="user_profile_image" , null=True , blank=True)
     user_type = models.CharField(max_length=50, choices=TYPE , default='Customer')
